@@ -1,0 +1,402 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+//---------------------------------------------------
+//ABB
+struct no {
+    int data;
+    struct no* L1;
+    struct no* R1;
+};
+
+
+struct no* criar_no(int data) {
+    struct no* novo = (struct no*)malloc(sizeof(struct no));
+    novo->data = data;
+    novo->L1 = NULL;
+    novo->R1 = NULL;
+    return novo;
+}
+
+
+struct no* inserir(struct no* raiz, int data) {
+    if (raiz == NULL) {
+        return criar_no(data);
+    }
+    if (data < raiz->data) {
+        raiz->L1 = inserir( raiz->L1, data);
+    } else if (data > raiz->data) {
+        raiz->R1 = inserir(raiz->R1, data);
+    }
+    return raiz;
+}
+
+
+void destruir_arvore(struct no* raiz) {
+    if (raiz != NULL) {
+        destruir_arvore(raiz->L1);
+        destruir_arvore(raiz->R1);
+        free(raiz);
+    }
+}
+
+
+void exibir_arvore(struct no* raiz) {
+    if (raiz != NULL) {
+        exibir_arvore(raiz->L1);
+        printf("%d ", raiz->data);
+        exibir_arvore(raiz->R1);
+    }
+}
+//-----------------------------------------------------------------------------
+//LISTA COM SOMA (COMO SE FOSSE CALCULADORA)
+    char nome[20];
+    float preco;
+    struct objeto *proximo;
+} Objeto;
+
+Objeto* adicionar(Objeto *head, char *nome, float preco) {
+    Objeto *novo = (Objeto*) malloc(sizeof(Objeto));
+    strcpy(novo->nome, nome);
+    novo->preco = preco;
+    novo->proximo = head;
+    return novo;
+}
+
+float somarPrecos(Objeto *head) {
+    float total = 0.0;
+    Objeto *atual = head;
+    while (atual != NULL) {
+        total += atual->preco;
+        atual = atual->proximo;
+    }
+    return total;
+}
+
+
+void imprimir(Objeto *head) {
+    Objeto *atual = head;
+
+
+    while (atual!= NULL) {
+        printf("%s->", atual->nome);
+        printf("%.2f\n", atual->preco);
+        atual = atual->proximo;
+    }
+
+
+}
+
+//LISTA---------------------------------------------------------------------------------------------------------------
+struct lista{
+  char nome[40];
+  struct lista* prox;
+};
+
+
+
+
+struct lista* inicio = NULL;
+
+void remover(char chave[40]){
+    struct lista* temp= inicio;
+    struct lista* prev= NULL;
+
+    if(temp !=NULL&& strcmp(temp->nome, chave)==0){
+        inicio=temp->prox;
+        free(temp);
+        return;
+    }
+    while(temp!=NULL && strcmp(temp->nome, chave)!=0){
+        prev= temp;
+        temp = temp->prox;
+    }
+    if(temp ==NULL)return;
+    prev->prox= temp->prox;
+    free(temp);
+
+}
+
+
+void adiciona(){
+    char nome[40];
+    struct lista* newlista=(struct lista*)malloc (sizeof(struct lista));
+    printf("\nDigite um nome: ");
+    scanf("%s", nome);
+    strcpy(newlista->nome, nome);
+    newlista->prox =  NULL;
+
+
+    if(inicio == NULL){
+        inicio = newlista;
+    }else{
+        struct lista* temp=inicio;
+        while(temp->prox != NULL){
+            temp = temp->prox;
+        }
+        temp->prox = newlista;
+    }
+}
+
+
+void imprimirlista(){
+    struct lista* temp = inicio;
+    if(temp==NULL){
+        printf("                   LISTA VAZIA\n");
+        return;
+    }
+    else {
+        while(temp!=NULL){
+            printf("%s\n",temp->nome);
+            temp = temp->prox;
+        }
+    }
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+//PILHA
+ struct pilha {
+    char nome[60];
+    struct pilha* pro;
+    struct pilha* anterior;
+    int tamanho;
+};
+
+
+struct pilha* topo = NULL;
+
+
+int vazia() {
+    return (topo == NULL);
+}
+
+
+void remove_da_pilha() {
+    char chave[60];
+    struct pilha* tempo = topo;
+    struct pilha* prev = NULL;
+    printf("Digite o nome para remover:");
+    scanf("%s", chave);
+    if (tempo != NULL && strcmp(tempo->nome, chave) == 0) {
+        topo = tempo->pro;
+        free(tempo);
+        return;
+    }
+    while (tempo != NULL && strcmp(tempo->nome, chave) != 0) {
+        prev = tempo;
+        tempo = tempo->pro;
+    }
+    if (tempo == NULL) return;
+    prev->pro = tempo->pro;
+    free(tempo);
+}
+
+
+void desempilhar(struct pilha* Pilha) {
+    char nome[60];
+    printf("Nome para desempilhar:");
+    scanf("%s", nome);
+
+
+    if (!vazia()) { 
+        struct pilha* pp = topo;
+        while (pp != NULL) {
+            if (strcmp(pp->nome, nome) == 0) {
+                topo = pp->anterior; 
+                free(pp);
+                return;
+            }
+            pp = pp->anterior;
+        }
+    }
+    printf("Nome nao encontrado na pilha.\n");
+}
+
+
+void empilhar() {
+    char nome[60];
+    struct pilha* pnovo = (struct pilha*)malloc(sizeof(struct pilha));
+    printf("Digite o nome:");
+    scanf("%s", nome);
+    strcpy(pnovo->nome, nome);
+    pnovo->pro = topo; 
+    if (pnovo != NULL) {
+        pnovo->anterior = topo;
+        topo = pnovo; 
+        pnovo->tamanho = topo->tamanho + 1; 
+    }
+}
+
+
+void imprimirpilha() {
+    struct pilha* tempo = topo;
+    if (tempo == NULL) {
+        printf("                   PILHA VAZIA\n");
+        return;
+    }
+    else {
+        while (tempo != NULL) {
+            printf("%s\n", tempo->nome);
+            tempo = tempo->pro;
+        }
+    }
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+int main() {
+    int i = 0;
+    while(i!=5){
+        printf("===============================================================================================\n");
+        printf("1->LISTA(COM SOMA DE PREÇO DE OBJETOS)\n2->LISTA DINAMICA\n3->PILHA\n4->ARVORE BINARIA\n");
+        printf("===============================================================================================\n");
+        printf("Escolha uma das opcoes: ");
+        scanf("%d",&i);
+        if(i==1){
+            Objeto *lista = NULL;
+
+            int n;
+            printf("Quantos objetos deseja adicionar?\n> ");
+            scanf("%d", &n);
+            for (int i = 0; i < n; i++) {
+                char nome[20];
+                float preco;
+                printf("Insira o nome do objeto %d: ", i+1);
+                scanf("%s", nome);
+                printf("Insira o preco do objeto %d: ", i+1);
+                scanf("%f", &preco);
+                lista = adicionar(lista, nome, preco);
+            }
+
+            float total = somarPrecos(lista);
+            system("cls");
+            printf("================================================================\n");
+            imprimir(lista);
+            printf("\n                                  Preco Total:   %2.f\n", total);
+            printf("================================================================");
+       
+        }
+        else if(i==2){
+            int op;
+        printf("digite 5 para limpar a tela");
+        while(op != 4){
+            printf("                                            NAVEGUE ESCOLHENDO UMA DAS OPCOES                                     \n");
+            printf("==================================================================================================================\n");
+            printf("1 -> Inserir na Agenda\n2 -> Imprimir Agenda\n3 -> remover da lista\n4 -> Sair do Programa\n");
+            printf("==================================================================================================================\n");
+            printf("OPCAO = ");
+            scanf("%d", &op);
+
+            if (op == 1){
+                system("cls");
+                printf("\n\n==================INSERIR NA AGENDA==================");
+                adiciona();
+                printf("-----------------------------------------------------\n");
+            }
+            else if (op == 2){
+                system("cls");
+                printf("\n\n==================LISTA IMPRESSA==================\n");
+                imprimirlista();
+                printf("-----------------------------------------------------\n");
+            }
+            else if(op==3){
+                char nome[40];
+                printf("Digite o nome:");
+                scanf("%s",nome);
+                remover(nome);
+                printf("REMOVIDO");
+                printf("\n\n==================LISTA IMPRESSA==================\n");
+                imprimirlista();
+                printf("-----------------------------------------------------\n");
+
+            }
+            else if (op == 4){
+                system("cls");
+                printf("~~~~~~~~~~~~~~~~~~~~FINISHED!!~~~~~~~~~~~~~~~~~~~~~");
+                return 0;
+            }
+            else if (op==5){
+                system("cls");
+                continue;
+            }
+        }
+        system("cls");
+        return 0;
+        }
+        else if(i==3){
+            int op;
+            printf("digite 5 para limpar a tela");
+            while(op != 4){
+                printf("                                            NAVEGUE ESCOLHENDO UMA DAS OPCOES                                     \n");
+                printf("==================================================================================================================\n");
+                printf("1 -> Inserir na pilha\n2 -> Imprimir pilha\n3 -> remover da pilha\n4 -> Sair do Programa\n");
+                printf("==================================================================================================================\n");
+                printf("OPCAO = ");
+                scanf("%d", &op);
+
+
+                if (op == 1){
+                    system("cls");
+                    printf("\n\n==================INSERIR NA PILHA==================\n");
+                    empilhar();
+                    printf("-----------------------------------------------------\n");
+                }
+                else if (op == 2){
+                    system("cls");
+                    printf("\n\n==================PILHA IMPRESSA==================\n");
+                    imprimirpilha();
+                    printf("-----------------------------------------------------\n");
+                }
+                else if(op==3){
+                    remove_da_pilha();
+                    printf("REMOVIDO");
+                    printf("\n\n==================PILHA ATUALIZADA==================\n");
+                    imprimirpilha();
+                    printf("-----------------------------------------------------\n");
+
+
+                }
+                else if (op == 4){
+                    system("cls");
+                    printf("~~~~~~~~~~~~~~~~~~~~FINISHED!!~~~~~~~~~~~~~~~~~~~~~");
+                    return 0;
+                }
+                else if (op==5){
+                    system("cls");
+                    continue;
+                }
+            }
+            system("cls");
+            
+        }
+        else if(i==4){
+            struct no* raiz = NULL;
+            int num_elementos, elemento, op;
+            printf("====================================\n");
+            printf("1->INSERIR NA ARVORE\n2->MOSTRAR ARVORE\n3->DESTRUIR ARVORE\n");
+            printf("====================================\n>");
+            scanf("%d",&op);
+            while(op != 4) {
+                if(op == 1) {
+                    printf("Digite o número de elementos que deseja inserir: ");
+                    scanf("%d", &num_elementos);
+                    for(int i = 0; i < num_elementos; i++) {
+                        printf("Digite o elemento %d: ", i + 1);
+                        scanf("%d", &elemento);
+                        raiz = inserir(raiz, elemento);
+                    }
+                }
+                else if(op == 2) {
+                    printf("==========ARVORE BINARIA==========\n");
+                    exibir_arvore(raiz);
+                    printf("\n==================================\n");
+                }
+                else if(op == 3) {
+                    destruir_arvore(raiz);
+                }
+            }
+        }
+    }
+}
+
+
+
