@@ -50,6 +50,7 @@ void exibir_arvore(struct no* raiz) {
 }
 //-----------------------------------------------------------------------------
 //LISTA COM SOMA (COMO SE FOSSE CALCULADORA)
+typedef struct objeto{
     char nome[20];
     float preco;
     struct objeto *proximo;
