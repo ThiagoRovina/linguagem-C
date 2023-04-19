@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 //---------------------------------------------------
 //ABB
 struct no {
@@ -242,6 +243,7 @@ void imprimirpilha() {
         }
     }
 }
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
 int main() {
@@ -372,11 +374,11 @@ int main() {
         else if(i==4){
             struct no* raiz = NULL;
             int num_elementos, elemento, op;
-            printf("====================================\n");
-            printf("1->INSERIR NA ARVORE\n2->MOSTRAR ARVORE\n3->DESTRUIR ARVORE\n");
-            printf("====================================\n>");
-            scanf("%d",&op);
             while(op != 4) {
+                printf("====================================\n");
+                printf("1->INSERIR NA ARVORE\n2->MOSTRAR ARVORE\n3->DESTRUIR ARVORE\n");
+                printf("====================================\n>");
+                scanf("%d",&op);
                 if(op == 1) {
                     printf("Digite o número de elementos que deseja inserir: ");
                     scanf("%d", &num_elementos);
@@ -398,6 +400,5 @@ int main() {
         }
     }
 }
-
 
 
