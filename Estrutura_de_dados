@@ -320,7 +320,7 @@ int main() {
             else if (op==5){
                 system("cls");
                 continue;
-            }
+            } 
         }
         system("cls");
         return 0;
