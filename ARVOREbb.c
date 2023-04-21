@@ -32,6 +32,7 @@ void destruir_arvore(struct no* raiz) {
         destruir_arvore(raiz->L1);
         destruir_arvore(raiz->R1);
         free(raiz);
+        printf("------------------------------\n      ARVORES DESTRUIDA!!\n");
     }
 }
 
@@ -43,14 +44,16 @@ void exibir_arvore(struct no* raiz) {
     }
 }
 
+
 int main() {
     struct no* raiz = NULL;
     int num_elementos, elemento, op;
-    printf("====================================\n");
-    printf("1->INSERIR NA ARVORE\n2->MOSTRAR ARVORE\n3->DESTRUIR ARVORE\n");
-    printf("====================================\n>");
-    scanf("%d",&op);
+
     while(op != 4) {
+        printf("====================================\n");
+        printf("1->INSERIR NA ARVORE\n2->MOSTRAR ARVORE\n3->DESTRUIR ARVORE\n");
+        printf("====================================\n>");
+        scanf("%d",&op);
         if(op == 1) {
             printf("Digite o número de elementos que deseja inserir: ");
             scanf("%d", &num_elementos);
@@ -68,8 +71,7 @@ int main() {
         else if(op == 3) {
             destruir_arvore(raiz);
         }
-        
-     
+
     }
     return 0;
 }
