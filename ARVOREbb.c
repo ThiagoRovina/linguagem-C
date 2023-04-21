@@ -69,10 +69,7 @@ int main() {
             destruir_arvore(raiz);
         }
         
-        printf("====================================\n");
-        printf("1->INSERIR NA ARVORE\n2->MOSTRAR ARVORE\n3->DESTRUIR ARVORE\n");
-        printf("====================================\n>");
-        scanf("%d", &op);
+     
     }
     return 0;
 }
