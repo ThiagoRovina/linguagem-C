@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct no NO;
+typedef struct lista_dinamica LISTA;
+
+struct no {
+    int item;
+    NO *prox;
+};
+
+struct lista_dinamica {
+    NO *inicio;
+};
+
+void insere(LISTA *lista, int valor) {
+    NO *novo = (NO *) malloc(sizeof(NO));
+    novo->item = valor;
+
+    if (lista->inicio == NULL || lista->inicio->item >= valor) {
+        novo->prox = lista->inicio;
+        lista->inicio = novo;
+    } else {
+        NO *atual = lista->inicio;
+        while (atual->prox != NULL && atual->prox->item < valor) {
+            atual = atual->prox;
+        }
+        novo->prox = atual->prox;
+        atual->prox = novo;
+    }
+}
+
+void intercala(LISTA *L1, LISTA *L2, LISTA *L3) {
+    NO *atual1 = L1->inicio;
+    NO *atual2 = L2->inicio;
+
+    while (atual1 != NULL && atual2 != NULL) {
+        if (atual1->item <= atual2->item) {
+            NO *novo = (NO *) malloc(sizeof(NO));
+            novo->item = atual1->item;
+            novo->prox = NULL;
+            if (L3->inicio == NULL) {
+                L3->inicio = novo;
+            } else {
+                NO *atual3 = L3->inicio;
+                while (atual3->prox != NULL) {
+                    atual3 = atual3->prox;
+                }
+                atual3->prox = novo;
+            }
+            atual1 = atual1->prox;
+        } else {
+            NO *novo = (NO *) malloc(sizeof(NO));
+            novo->item = atual2->item;
+            novo->prox = NULL;
+            if (L3->inicio == NULL) {
+                L3->inicio = novo;
+            } else {
+                NO *atual3 = L3->inicio;
+                while (atual3->prox != NULL) {
+                    atual3 = atual3->prox;
+                }
+                atual3->prox = novo;
+            }
+            atual2 = atual2->prox;
+        }
+    }
+
+    while (atual1 != NULL) {
+        NO *novo = (NO *) malloc(sizeof(NO));
+        novo->item = atual1->item;
+        novo->prox = NULL;
+        if (L3->inicio == NULL) {
+            L3->inicio = novo;
+        } else {
+            NO *atual3 = L3->inicio;
+            while (atual3->prox != NULL) {
+                atual3 = atual3->prox;
+            }
+            atual3->prox = novo;
+        }
+        atual1 = atual1->prox;
+    }
+
+    while (atual2 != NULL) {
+        NO *novo = (NO *) malloc(sizeof(NO));
+        novo->item = atual2->item;
+        novo->prox = NULL;
+        if (L3->inicio == NULL) {
+            L3->inicio = novo;
+        } else {
+            NO *atual3 = L3->inicio;
+            while (atual3->prox != NULL) {
+                atual3 = atual3->prox;
+            }
+            atual3->prox = novo;
+        }
+        atual2 = atual2->prox;
+    }
+}
+
+int main() {
+    LISTA L1 = {NULL};
+    LISTA L2 = {NULL};
+    LISTA L3 = {NULL};
+    int op = 0, valor;
+
+    while (op != 3) {
+        printf("1 - Inserir na Lista L1\n2 - Inserir na Lista L2\n3 - Mostrar lista \n");
+        scanf("%d", &op);
+
+        if (op == 1) {
+            printf("Valor a ser inserido na Lista L1: ");
+            scanf("%d", &valor);
+            insere(&L1, valor);
+        } else if (op == 2) {
+            printf("Valor a ser inserido na Lista L2: ");
+            scanf("%d", &valor);
+            insere(&L2, valor);
+        }
+    }
+
+    intercala(&L1, &L2, &L3);
+
+    NO *atual = L3.inicio;
+    while (atual != NULL) {
+        printf(" %d", atual->item);
+        atual = atual->prox;
+    }
+    printf("\n");
+
+    return 0;
+}
