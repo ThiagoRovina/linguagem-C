@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    double a, b, c, discriminante, raiz1, raiz2;
+
+    printf("Digite os coeficientes da equacao quadratica (a, b, c): ");
+    scanf("%lf %lf %lf", &a, &b, &c);
+
+    discriminante = b * b - 4 * a * c;
+
+    if (discriminante > 0) {
+        raiz1 = (-b + sqrt(discriminante)) / (2 * a);
+        raiz2 = (-b - sqrt(discriminante)) / (2 * a);
+        printf("As raizes sao reais e diferentes: %.2lf e %.2lf\n", raiz1, raiz2);
+    } else if (discriminante == 0) {
+        raiz1 = raiz2 = -b / (2 * a);
+        printf("As raizes sao reais e iguais: %.2lf\n", raiz1);
+    } else {
+        double parteReal = -b / (2 * a);
+        double parteImaginaria = sqrt(fabs(discriminante)) / (2 * a);
+        printf("As raizes sao complexas conjugadas: %.2lf + %.2lfi e %.2lf - %.2lfi\n",
+               parteReal, parteImaginaria, parteReal, parteImaginaria);
+    }
+
+    return 0;
+}
