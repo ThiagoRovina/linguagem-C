@@ -1,0 +1,64 @@
+// -------------------------------ATENÇÃO------------------------------------
+//        Para o funcionamento do código é necessario ter o Gnuplot instalado
+//  no computador.
+//      
+
+//    --> script do gnuplot para a visualização do triangulo:
+//          set title "Triângulo de Sierpinski"
+//          set size ratio -1
+//          unset key
+//          unset border
+//          unset tics
+//          plot "sierpinski.dat" with points pt 7 ps 0.5
+          
+//   Salve o código C em um arquivo chamado sierpinski.c e compile-o usando o GCC >  gcc sierpinski.c -o sierpinski; ./sierpinski    
+//    Execute o script do Gnuplot:  gnuplot -persist plot_sierpinski.gp
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+typedef struct {
+    double x;
+    double y;
+} Point;
+
+
+void save_point(FILE *file, Point p) {
+    fprintf(file, "%lf %lf\n", p.x, p.y);
+}
+
+void sierpinski(FILE *file, int depth, Point a, Point b, Point c) {
+    if (depth == 0) {
+        save_point(file, a);
+        save_point(file, b);
+        save_point(file, c);
+    } else {
+        Point ab = {(a.x + b.x) / 2, (a.y + b.y) / 2};
+        Point bc = {(b.x + c.x) / 2, (b.y + c.y) / 2};
+        Point ca = {(c.x + a.x) / 2, (c.y + a.y) / 2};
+
+        sierpinski(file, depth - 1, a, ab, ca);
+        sierpinski(file, depth - 1, ab, b, bc);
+        sierpinski(file, depth - 1, ca, bc, c);
+    }
+}
+
+int main() {
+    FILE *file = fopen("sierpinski.dat", "w");
+    if (!file) {
+        fprintf(stderr, "Erro ao abrir o arquivo!\n");
+        return 1;
+    }
+
+    int depth = 5; 
+    Point a = {0.0, 0.0};
+    Point b = {1.0, 0.0};
+    Point c = {0.5, 0.866};  
+
+    sierpinski(file, depth, a, b, c);
+
+    fclose(file);
+    return 0;
+}
