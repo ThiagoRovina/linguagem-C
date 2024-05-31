@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    int i, j, k, m, n;
+    i = 0;
+    j = 1;
+    k = 1;
+
+    for (m = 0; m < 5; m++) {
+        for (n = 0; n < 5; n++) {
+            printf("%-5d ", k);
+            k = i + j;
+            i = j;
+            j = k;
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
